@@ -16,15 +16,15 @@ const Car = ethAirBalloonsProvider.createSchema({
   contractName: 'certificateContract',
   properties: [
     {
-      name: 'roll',
+      name: 'order_id',
       type: 'bytes32',
       primaryKey: true,
     },
     {
-      name: 'certificate_number',
+      name: 'order_price',
       type: 'bytes32',
     },
-    { name: 'cgpa', type: 'uint' },
+    { name: 'order_type', type: 'bytes32' },
   ],
 })
 Car.setAccount()

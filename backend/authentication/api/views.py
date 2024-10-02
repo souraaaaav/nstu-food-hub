@@ -1,3 +1,5 @@
+import requests
+
 from authentication.models import (ProductRating, User, Product, Package, Order, OrderProduct, PackageOrder,
                                    PackageOrderProduct)
 from django.conf import settings
@@ -648,6 +650,8 @@ def status_change(request):
         order_type = request.data['type']
         otp = request.data.get('otp')
 
+
+
         if order_type == 'product':
             if order_status == 'COOK_READY':
                 order = Order.objects.get(id=order_id)
@@ -666,6 +670,15 @@ def status_change(request):
                 order.otp = '0'
                 order.save()
 
+            if order_status == "DELIVERED":
+                order = Order.objects.get(id=order_id)
+                blockchain_data = {"order_id": str(order_id),
+                                   "order_price": str(order.total_price), "order_type": "package"}
+                response = requests.post(
+                    'http://localhost:3001/create', json=blockchain_data)
+
+
+
         if order_type == 'package':
             if order_status == 'COOK_READY':
                 package = PackageOrder.objects.get(id=order_id)
@@ -683,6 +696,14 @@ def status_change(request):
                 order.status = order_status
                 order.otp = '0'
                 order.save()
+
+            if order_status == "DELIVERED":
+                order = PackageOrder.objects.get(id=order_id)
+                blockchain_data = {"order_id": str(order_id),
+                                   "order_price": str(order.total_price), "order_type": "package"}
+                response = requests.post(
+                    'http://localhost:3001/create', json=blockchain_data)
+
         return Response({'message': 'ok'}, status=status.HTTP_200_OK)
 
     except Exception as e:
