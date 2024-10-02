@@ -37,6 +37,7 @@ const SellerOrder = () => {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Token ${storeData.token}`,
             }
         };
 

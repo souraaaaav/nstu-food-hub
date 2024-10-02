@@ -52,6 +52,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'name', 'price', 'description', 'image','rating','product_type', 'restaurant']
 
+        depth = 2
 class OrderProductSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     class Meta:
@@ -70,8 +71,9 @@ class PackageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Package
-        fields = ['id', 'name', 'products','image','description']
+        fields = ['id', 'name', 'products','image','description', 'restaurant']
 
+        depth = 2
 class PackageCreateSerializer(serializers.ModelSerializer):
     products = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), many=True)
 

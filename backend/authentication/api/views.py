@@ -279,7 +279,8 @@ def create_order(request):
             bill=bill,
             payment_id=payment_id,
             total_price=total_price,
-            cod=cod
+            cod=cod,
+            restaurant=Package.objects.get(pk=cart_items[0]['product_id']).restaurant,
         )
 
         for item in cart_items:
@@ -343,7 +344,8 @@ def create_package_order(request):
             payment_id=payment_id,
             total_price=total_price,
             cod=cod,
-            package=Package.objects.get(pk=package_order)
+            package=Package.objects.get(pk=package_order),
+            restaurant=Package.objects.get(pk=package_order).restaurant,
         )
 
         for item in cart_items:
@@ -613,10 +615,9 @@ def delete_product(request, pk):
 
 class SellerOrderListView(generics.ListAPIView):
     serializer_class = OrderSerializer
-    permission_classes = [AllowAny]
 
     def get_queryset(self):
-        queryset = Order.objects.filter(status='ORDERED')
+        queryset = Order.objects.filter(restaurant=self.request.user, status='ORDERED')
 
         payment_id = self.request.query_params.get('payment_id', None)
         if payment_id is not None:
@@ -627,10 +628,9 @@ class SellerOrderListView(generics.ListAPIView):
 
 class SellerPackageOrderListAPIView(generics.ListAPIView):
     serializer_class = PackageOrderSerializer
-    permission_classes = [AllowAny]
 
     def get_queryset(self):
-        queryset = PackageOrder.objects.filter(status='ORDERED')
+        queryset = PackageOrder.objects.filter(restaurant=self.request.user, status='ORDERED')
 
         payment_id = self.request.query_params.get('payment_id', None)
         if payment_id is not None:

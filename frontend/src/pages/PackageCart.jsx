@@ -370,7 +370,7 @@ const PackageCart = () => {
 
                                                             <h5 className='create-post-submit-btn'
                                                                 style={{background: '#E2136E', textAlign: 'center'}}
-                                                                onClick={() => handleSubmit(generatePaymentId())}>
+                                                                >
                                                 <span>
                                                    Bkash
                                                 </span>

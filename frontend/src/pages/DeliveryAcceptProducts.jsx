@@ -105,6 +105,14 @@ const DeliveryAcceptProducts = () => {
             filterPlaceholder: "Filter by Type"
         },
         {title: "Placed At", field: "created_at", filterPlaceholder: "Filter by date",},
+        {
+            title: "Seller Info", filtering: false, sorting: false, render: rowData => (
+                <div>
+                    <b>Name: </b> {rowData.order_products[0].product.restaurant.name} <br />
+                    <b>Phone: </b> {rowData.order_products[0].product.restaurant.phone} <br />
+                </div>
+            )
+        }
     ];
 
     const handleModalOpen = (data) => {

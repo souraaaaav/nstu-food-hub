@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
 import Loader from '../components/Loader/Loader.jsx';
 import Stepper from "../components/Stepper/Stepper";
 import axios from '../helper/axios-helper.js';
@@ -70,12 +70,19 @@ const Orders = () => {
     }, [storeData, packageSearchTerm]);
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
         return date.toLocaleDateString('en-US', options);
     };
     return (
         <>
-            {(loading) && <Loader />}
+            {(loading) && <Loader/>}
             <div class="breadcrumb-section breadcrumb-bg">
                 <div class="container">
                     <div class="row">
@@ -106,13 +113,13 @@ const Orders = () => {
                             <div class="product-filters">
                                 <ul>
                                     <li>
-                                        <i className="fas fa-search" style={{ marginRight: '10px' }}></i>
+                                        <i className="fas fa-search" style={{marginRight: '10px'}}></i>
                                         <input
                                             type="text"
                                             placeholder="Filter by Payment ID"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
-                                            style={{ border: 'none', outline: 'none' }}
+                                            style={{border: 'none', outline: 'none'}}
                                         />
                                     </li>
                                 </ul>
@@ -122,49 +129,58 @@ const Orders = () => {
                             <div class="total-section">
                                 <table class="total-table">
                                     <thead class="total-table-head">
-                                        <tr class="table-total-row">
-                                            <th>Payment Id</th>
-                                            <th>Order Placed Time</th>
-                                            <th>Total Price</th>
-                                            <th>Product Details</th>
-                                            <th>Order Status</th>
-                                        </tr>
+                                    <tr class="table-total-row">
+                                        <th>Payment Id</th>
+                                        <th>Order Placed Time</th>
+                                        <th>Shop Info</th>
+                                        <th>Product Details</th>
+                                        <th>Order Status</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        {orders ? orders.map(order => (
-                                            <tr key={order.id} className="total-data">
-                                                <td><strong>{order.payment_id}</strong></td>
-                                                <td>{formatDate(order.created_at)}</td>
-                                                <td>{order.total_price}</td>
-                                                <td>
-                                                    <table class="total-table">
-                                                        <thead class="total-table-head">
-                                                            <tr class="table-total-row">
-                                                                <th>Name</th>
-                                                                <th>Price(per unit)</th>
-                                                                <th>Quantity</th>
-                                                                <th>Total Price</th>
-                                                            </tr>
-                                                        </thead>
+                                    {orders ? orders.map(order => (
+                                        <tr key={order.id} className="total-data">
+                                            <td><strong>{order.payment_id}</strong></td>
+                                            <td>{formatDate(order.created_at)}</td>
+                                            <td>
+                                                <b>Name:</b> {order.order_products[0].product.restaurant.name}<br/><b>Phone:</b> {order.order_products[0].product.restaurant.phone}<br/>
+                                            </td>
+                                            <td>
+                                                <table class="total-table">
+                                                    <thead class="total-table-head">
+                                                    <tr class="table-total-row">
+                                                        <th>Name</th>
+                                                        <th>Price(per unit)</th>
+                                                        <th>Quantity</th>
+                                                        <th>Total Price</th>
+                                                    </tr>
+                                                    </thead>
 
-                                                        <tbody>
-                                                            {order.order_products.map((item, i) => (
-                                                                <tr key={i} className="total-data">
-                                                                    <td>{item.product.name}</td>
-                                                                    <td>{item.product.price}</td>
-                                                                    <td>{item.quantity}</td>
-                                                                    <td> {parseInt(item.product.price) * item.quantity}</td>
-                                                                </tr>
-                                                            ))}
-
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                                <td>
-                                                    <Stepper currentStatus={order.status} />
-                                                </td>
-                                            </tr>
-                                        )) : <tr className="total-data" ><td colSpan={4}>No Orders found!!!</td></tr>}
+                                                    <tbody>
+                                                    {order.order_products.map((item, i) => (
+                                                        <tr key={i} className="total-data">
+                                                            <td>{item.product.name}</td>
+                                                            <td>{item.product.price}</td>
+                                                            <td>{item.quantity}</td>
+                                                            <td> {parseInt(item.product.price) * item.quantity}</td>
+                                                        </tr>
+                                                    ))}
+                                                    <tr className="total-data">
+                                                        <td>Shipping</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>45</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <Stepper currentStatus={order.status}/>
+                                            </td>
+                                        </tr>
+                                    )) : <tr className="total-data">
+                                        <td colSpan={4}>No Orders found!!!</td>
+                                    </tr>}
 
                                     </tbody>
                                 </table>
@@ -182,13 +198,13 @@ const Orders = () => {
                             <div class="product-filters">
                                 <ul>
                                     <li>
-                                        <i className="fas fa-search" style={{ marginRight: '10px' }}></i>
+                                        <i className="fas fa-search" style={{marginRight: '10px'}}></i>
                                         <input
                                             type="text"
                                             placeholder="Filter by Payment ID"
                                             value={packageSearchTerm}
                                             onChange={(e) => setPackageSearchTerm(e.target.value)}
-                                            style={{ border: 'none', outline: 'none' }}
+                                            style={{border: 'none', outline: 'none'}}
                                         />
                                     </li>
                                 </ul>
@@ -198,62 +214,64 @@ const Orders = () => {
                             <div class="total-section">
                                 <table class="total-table">
                                     <thead class="total-table-head">
-                                        <tr class="table-total-row">
-                                            <th>Payment Id</th>
+                                    <tr class="table-total-row">
+                                        <th>Payment Id</th>
 
-                                            <th>Package Name</th>
-                                            <th>Order Placed Time</th>
+                                        <th>Package Name</th>
+                                        <th>Order Placed Time</th>
 
-                                            <th>Total Price</th>
-                                            <th>Product Details</th>
-                                            <th>Order Status</th>
-                                        </tr>
+                                        <th>Shop Info</th>
+                                        <th>Product Details</th>
+                                        <th>Order Status</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        {packageOrders ? packageOrders.map(order => (
-                                            <tr key={order.id} className="total-data">
-                                                <td><strong>{order.payment_id}</strong></td>
-                                                <td>{order.package.name}</td>
-                                                <td>{formatDate(order.created_at)}</td>
+                                    {packageOrders ? packageOrders.map(order => (
+                                        <tr key={order.id} className="total-data">
+                                            <td><strong>{order.payment_id}</strong></td>
+                                            <td>{order.package.name}</td>
+                                            <td>{formatDate(order.created_at)}</td>
 
-                                                <td>{order.total_price}</td>
-                                                <td>
-                                                    <table class="total-table">
-                                                        <thead class="total-table-head">
-                                                            <tr class="table-total-row">
-                                                                <th>Name</th>
-                                                                <th>Price(per unit)</th>
-                                                                <th>Quantity</th>
-                                                                <th>Total Price</th>
-                                                            </tr>
-                                                        </thead>
+                                            <td>
+                                                <b>Name:</b> {order.package.products[0].restaurant.name}<br/><b>Phone:</b> {order.package.products[0].restaurant.phone}<br/>
+                                            </td>
+                                            <td>
+                                                <table class="total-table">
+                                                    <thead class="total-table-head">
+                                                    <tr class="table-total-row">
+                                                        <th>Name</th>
+                                                        <th>Price(per unit)</th>
+                                                        <th>Quantity</th>
+                                                        <th>Total Price</th>
+                                                    </tr>
+                                                    </thead>
 
-                                                        <tbody>
-                                                            {order.package_order_products.map((item, i) => (
-                                                                <tr key={i} className="total-data">
-                                                                    <td>{item.product.name}</td>
-                                                                    <td>{item.product.price}</td>
-                                                                    <td>{item.quantity}</td>
-                                                                    <td> {parseInt(item.product.price) * item.quantity}</td>
+                                                    <tbody>
+                                                    {order.package_order_products.map((item, i) => (
+                                                        <tr key={i} className="total-data">
+                                                            <td>{item.product.name}</td>
+                                                            <td>{item.product.price}</td>
+                                                            <td>{item.quantity}</td>
+                                                            <td> {parseInt(item.product.price) * item.quantity}</td>
 
-                                                                </tr>
-                                                            ))}
-                                                            <tr className="total-data">
-                                                                <td>Shipping</td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td>45</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                                <td>
-                                                    <Stepper currentStatus={order.status} />
-                                                </td>
-                                            </tr>
-                                        )) : <tr className="total-data">
-                                            <td colSpan={4}>No Orders found!!!</td>
-                                        </tr>}
+                                                        </tr>
+                                                    ))}
+                                                    <tr className="total-data">
+                                                        <td>Shipping</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>45</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <Stepper currentStatus={order.status}/>
+                                            </td>
+                                        </tr>
+                                    )) : <tr className="total-data">
+                                        <td colSpan={4}>No Orders found!!!</td>
+                                    </tr>}
 
                                     </tbody>
                                 </table>
